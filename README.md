@@ -82,48 +82,7 @@ curl -X POST http://127.0.0.1:8000/admin/login \
 
 ### High Level Diagram
 
-Use this PlantUML code to render the architecture diagram:
-
-```plantuml
-@startuml
-title Organization Management Service - High Level Architecture
-
-skinparam rectangleStyle rounded
-skinparam shadowing false
-skinparam defaultTextAlignment center
-skinparam wrapWidth 200
-
-actor Client as C
-
-rectangle "FastAPI Application\nOrganization Service" as API {
-  
-  rectangle "Auth Layer\nJWT Login & Verification" as Auth
-  
-  rectangle "Organization Management\nCreate Get Update Delete" as OrgMgmt
-  
-  rectangle "Dynamic Collection Handler\norg_<name> creation rename delete" as DynHandler
-}
-
-database "MongoDB Master Database" as MasterDB {
-  rectangle "organizations_collection\nOrg Metadata" as Orgs
-  rectangle "admins_collection\nAdmin Credentials" as Admins
-}
-
-database "MongoDB Dynamic Collections" as DynDB {
-  rectangle "org_<organization_name>\nPer Tenant Data" as OrgCollection
-}
-
-C --> API : REST API Calls JSON
-API --> Auth : Login Verify
-API --> OrgMgmt : CRUD Operations
-OrgMgmt --> DynHandler : Create Rename Delete Collections
-
-Auth --> Admins : Validate Credentials
-OrgMgmt --> Orgs : Read Write Metadata
-DynHandler --> DynDB : Create Rename Drop Collections
-
-@enduml
-```
+![Architecture Diagram](architecture.png)
 
 ---
 
